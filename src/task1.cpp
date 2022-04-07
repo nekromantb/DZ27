@@ -4,13 +4,14 @@
 #include <map>
 #include <cstdlib>
 #include <ctime>
+#include <vector>
 
 class Branch
 {
     int count = 0;
     std::string nameElf;
     Branch* parent = nullptr;
-    Branch** childBranches = nullptr;
+    std::vector<Branch*> childBranches;
 
 public:
 
@@ -23,7 +24,9 @@ public:
             count = std::rand() % 3 + 3;
             std::cout << "Tree in filling"<< std::endl;
         }
-        else if (parent->parent== nullptr) count = std::rand() % 2 + 2;
+        else if (parent->parent== nullptr) {
+            count = std::rand() % 2 + 2;
+        }
         else count = 0;
         if (nameElf != "None")
         {
@@ -31,8 +34,10 @@ public:
             std::cin >> nameElf;
         }
         for (int i = 0; i< count; ++i) {
-            std::cout << "Branch " << i+1 << " out of " << count << " in filling"<< std::endl;
-            childBranches[i] = new Branch(this);
+            if (parent== nullptr) std::cout << "Big ";
+            else std::cout << "Medium ";
+            std::cout << "branch " << i+1 << " out of " << count << " in filling"<< std::endl;
+            childBranches.push_back(new Branch(this));
         }
     }
 
@@ -51,6 +56,7 @@ public:
 
     int neibourghCount (Branch* inBranch)
     {
+        if (inBranch == nullptr) return -1;
         int i = 0;
         if (inBranch->parent->parent == nullptr)
         {
@@ -76,10 +82,11 @@ public:
 void task1()
 {
     std::srand(std::time(nullptr));
-    Branch** tree = nullptr;
+    std::vector<Branch*> tree;
     for (int i = 0; i <5; ++i)
     {
-        tree[i] = new Branch();
+        std::cout << i+1 << " ";
+        tree.push_back(new Branch());
     }
     std::cout << "What elf do you want to find?" <<std::endl;
     int answer = 0;
@@ -91,8 +98,6 @@ void task1()
         if (found != nullptr)
             answer = found->neibourghCount(found);
     }
-    std::cout << "Answer is " << answer <<std::endl;
-    delete tree;
-    tree= nullptr;
-    delete tree;
+    if (answer == -1 ) std::cout << "No such elf found!"<<std::endl;
+    else std::cout << "Answer is " << answer <<std::endl;
 }
