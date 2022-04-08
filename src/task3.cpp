@@ -32,7 +32,7 @@ public:
     void giveTask()
     {
         task = (TASK)(std::rand() % 3);
-        std::cout << "Worker " << name << "get task type " << getTypeTask(task) << std::endl;
+        std::cout << "Worker " << name << " get task type " << getTypeTask(task) << std::endl;
     }
 };
 
@@ -91,7 +91,7 @@ public:
         teams = new Manager*[countTeam];
         for (int i = 0; i < countTeam; ++i)
         {
-            teams[i] = new Manager(inCountTeam,i+1);
+            teams[i] = new Manager(inCountWorkers,i+1);
         }
     }
 
@@ -125,7 +125,11 @@ void task3()
         std::cout << "Enter task!" << std::endl;
         int task;
         std::cin >> task;
-        if (!comp->doTask(task)) break;
+        if (!comp->doTask(task))
+        {
+            std::cout << "All teams are in work! Simulation will be stop." << std::endl;
+            break;
+        }
     }
     delete comp;
     comp = nullptr;
