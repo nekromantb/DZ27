@@ -127,4 +127,7 @@ void task3()
         std::cin >> task;
         if (!comp->doTask(task)) break;
     }
+    delete comp;
+    comp = nullptr;
+    delete comp;
 }
