@@ -58,7 +58,7 @@ public:
     {
         std::cout << "Team " << teamNumber << " get task " << inTask << std::endl;
         std::srand(inTask+teamNumber);
-        int taskCount = std::rand()% (countWorker+1);
+        int taskCount = std::rand()% countWorker+1;
         if (taskCount > countWorker - lastWorker)
         {
             taskCount = countWorker;
@@ -70,6 +70,7 @@ public:
             workers[i]->giveTask();
             ++lastWorker;
         }
+        if (lastWorker == countWorker) fullOfJob = true;
     }
 
     bool getFullOfJob()
@@ -103,7 +104,11 @@ public:
         {
             if (!teams[i]->getFullOfJob()) {
                 teams[i]->giveTeamTask(task);
-            } else ++count;
+            }
+        }
+        for (int i = 0; i<countTeam;++i)
+        {
+            if (teams[i]->getFullOfJob()) ++count;
         }
         if (count == countTeam) return false;
         else return true;
